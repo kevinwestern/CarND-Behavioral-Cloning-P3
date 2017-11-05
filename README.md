@@ -53,6 +53,10 @@ The simulator can be downloaded from the classroom. In the classroom, we have al
 
 ## Details About Files In This Directory
 
+### `model.py`
+
+Use `model.py` to train a model from data found in the `data/` directory. The directory is expected to contain a `driving_log.csv` file and an `IMG/` directory which contains training images. Training takes roughly five minutes on the AWS g2 instance.
+
 ### `drive.py`
 
 Usage of `drive.py` requires you have saved the trained model as an h5 file, i.e. `model.h5`. See the [Keras documentation](https://keras.io/getting-started/faq/#how-can-i-save-a-keras-model) for how to create this file using the following command:
@@ -112,11 +116,38 @@ python video.py run1 --fps 48
 
 Will run the video at 48 FPS. The default FPS is 60.
 
-#### Why create a video
+### Model Architecture and Training Strategy
 
-1. It's been noted the simulator might perform differently based on the hardware. So if your model drives succesfully on your machine it might not on another machine (your reviewer). Saving a video is a solid backup in case this happens.
-2. You could slightly alter the code in `drive.py` and/or `video.py` to create a video of what your model sees after the image is processed (may be helpful for debugging).
+- I followed the [nVidia architecture](https://devblogs.nvidia.com/parallelforall/deep-learning-self-driving-cars/) while adding my own dropouts between the fully connected layers to help reduce overfitting.
 
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
+- The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 210).
 
+- The top 50 and bottom 20 pixels from each image are cropped to remove the sky and hood of the car.
+
+- After cropping, the images are resized to 66hx200w to fit the nvidia model.
+
+- Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road. From this, I was able to visualize the distrubtion of driving angles I have for training:
+
+The angles when driving normally:
+
+![Normal driving set](writeup_images/normal_driving.png)
+
+The angles when driving the track in the opposite direction:
+
+![Normal driving set](writeup_images/track_reverse.png)
+
+The angles for the recovery dataset:
+
+![Normal driving set](writeup_images/corrections.png)
+
+And finally, everything combined:
+
+![Normal driving set](writeup_images/combined.png)
+
+I also plotted images with "sharper" angles to verify my expectations of driving direction were correct:
+
+![Left, Center and right iamges](writeup_images/left_center_right.png)
+
+I applied random X,Y translations to images during training to account for different camera angles:
+
+![!random x,y translations](writeup_images/random_translations.png)

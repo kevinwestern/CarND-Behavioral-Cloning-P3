@@ -94,6 +94,10 @@ I also used the recovery set to record "sharp turns". I wasn't actually turning,
 
 I used this approach to get through sharper turns and to also train my car to quickly turn away from curb/edge of the road should it find itself there.
 
+I also plotted images with "sharper" angles to verify my expectations of driving direction were correct:
+
+![Left, Center and right iamges](writeup_images/left_center_right.png)
+
 ### Training
 
 I split the data into training and validation datasets to start with.
@@ -102,7 +106,15 @@ For the training data I did some additional processing:
 
 - I combined all the data sets together for taining. I also randomly dropped some datapoints with low steering angles since I still had a lot of datapoints going straight.
 
+- The top 50 and bottom 20 pixels from each image are cropped to remove the sky and hood of the car.
+
+- After cropping, the images are resized to 66hx200w to fit the nvidia model.
+
 - I also created more sharp-turning angles by copying other sharp turns until the number of sharp turns equaled the number of soft turns. I defined sharp turns to be turns with an absolute steering angle greated than 3.5%.
+
+- I applied random X,Y translations to images during training to account for different camera angles:
+
+![!random x,y translations](writeup_images/random_translations.png)
 
 I used keras generators since I was running out of memeory otherwise.
 
