@@ -148,6 +148,12 @@ I also plotted images with "sharper" angles to verify my expectations of driving
 
 ![Left, Center and right iamges](writeup_images/left_center_right.png)
 
+I also used the recovery set to record "sharp turns". I wasn't actually turning, but instead, I found problematic points of the track and parked my car there and turned the wheel in the direction I wanted to go and recorded my car in that stationary position for a few seconds.
+
+I used this approach to get through sharper turns and to also train my car to quickly turn away from curb/edge of the road should it find itself there.
+
+I also plotted images with "sharper" angles to verify my expectations of driving direction were correct:
+
 I applied random X,Y translations to images during training to account for different camera angles:
 
 ![!random x,y translations](writeup_images/random_translations.png)
